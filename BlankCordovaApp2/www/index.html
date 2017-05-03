@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+    <!--
+        Personnalisez la stratégie de sécurité de contenu dans la balise meta ci-dessous selon vos besoins. Ajoutez 'unsafe-inline' à default-src pour activer JavaScript directement dans les lignes.
+        Pour obtenir des détails, consultez http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="css/themes/CustomTheme.css" rel="stylesheet" />
+        <link href="css/themes/CustomTheme.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> 
+        <script src="scripts/index.js"></script>
+        <link href="css/themes/jquery.mobile.icons.min.css" rel="stylesheet" />
+        <script type="text/javascript" src="cordova.js"></script>
+        <script>
+            var pictureSource;   // picture source
+            var destinationType; // sets the format of returned value
+
+            // Wait for device API libraries to load
+            //
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            // device APIs are available
+            //
+            function onDeviceReady() {
+                pictureSource = navigator.camera.PictureSourceType;
+                destinationType = navigator.camera.DestinationType;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+                // Uncomment to view the base64-encoded image data
+                // console.log(imageData);
+
+                // Get image handle
+                //
+
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+                smallImage.style.margin = "10px";
+
+                // Show the captured photo
+                // The in-line CSS rules are used to resize the image
+                //
+                smallImage.src = "data:image/jpeg;base64," + imageData;
+                
+
+                
+         
+           
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+              
+                // Uncomment to view the image file URI
+                // console.log(imageURI);
+
+                // Get image handle
+                //
+                //var largeImage = document.getElementById('largeImage');
+
+                // Unhide image elements
+                //
+               // largeImage.style.display = 'block';
+
+                // Show the captured photo
+                // The in-line CSS rules are used to resize the image
+                //
+               // largeImage.src = imageURI;
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+                console.log(options.fileName);
+                var params = new Object();
+                params.value1 = "test";
+                params.value2 = "param";
+                options.params = params;
+                options.chunkedMode = false;
+                var ft = new FileTransfer();
+                ft.upload(imageURI, "http://playfanfip.cluster021.hosting.ovh.net/upload/upload.php?id=cfNRHLxnrNo:APA91bHQBQw2XxDquNABHWEP9g5CaYDQmL5wiUE9EgKaJYgf9am-ytmVhyliisO-xQ2XRTn6bi1c8dS6QJ_raWV4s97kMZu-0dLSJl316IG46zvzi1YidcFocKVSjmLUAFIO2hZKX8xc", function (result) {
+                    console.log("WIN !" + JSON.stringify(result));
+                }, function (error) {
+                    console.log("ERROR" + JSON.stringify(error));
+                    }, options);
+      
+            }
+
+            // A button will call this function
+            //
+
+            // A button will call this function
+            //
+            function capturePhotoEdit() {
+                // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
+                    quality: 20, allowEdit: true,
+                    destinationType: destinationType.DATA_URL
+                });
+            }
+
+            // A button will call this function
+            //
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, {
+                    quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source
+                });
+            }
+
+            // Called if something bad happens.
+            //
+            function takephoto() {
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true });
+                }
+            function onFail(message) {
+                    alert('Failed because: ' + message);
+            }
+
+                            refreshFunction = window.setInterval(getArticles, 500);
+
+            $(document).ready(function () {
+                window.setInterval(getImage, 500)
+                $("button").click(function () {
+                    function getImage() {
+                    $("#divImage").empty();
+                    $.getJSON('http://playfanfip.cluster021.hosting.ovh.net/upload/imageDb.json', function (data) {
+                        $.each(data, function (i, field) {
+                            if (i < 25) {
+                                $("#divImage").append("<img class='popphoto' src='" + field + "'></img>");
+                            }
+                        });
+                    });
+                }
+                });
+            }); 
+        </script>
+        <title>SnapC</title>
+    </head>
+    <body>
+        <div data-role="page" data-add-back-btn="true" data-back-btn-text="Retour" id="one">
+            
+            <div data-role="header">
+                <button class="ui-btn ui-icon-refresh ui-btn-icon-left">Get</button>
+                <h1>Mon application</h1>
+                <button onclick="takephoto();" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-video">Snap</button>                
+            </div>
+
+            <div data-role="content">
+                
+                <div id="imgTest"></div>
+                <div id="divImage">
+                <div data-role="popup" id="img1" data-overlay-theme="a" data-theme="d" data-corners="false"></div></div>
+                    <!--<img style="display:none;width:128px;height:128px;" id="smallImage" src="" />-->
+                </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></script>
+    </body>
+</html>

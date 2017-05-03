@@ -1,0 +1,40 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-camera": {
+            "CAMERA_USAGE_DESCRIPTION": " ",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "com.phonegap.plugins.PushPlugin": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "AIzaSyAw4IvwQ5WvA-mg_GbBuiZt0EX5hYp67VY",
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "io.cordova.AnonyPics"
+        }
+    }
+}
